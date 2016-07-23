@@ -15,7 +15,7 @@ unit fpvectorial;
   {$mode objfpc}{$h+}
 {$endif}
 
-{$define USE_LCL_CANVAS}
+{.$define USE_LCL_CANVAS}
 {$ifdef USE_LCL_CANVAS}
   {$define USE_CANVAS_CLIP_REGION}
   {.$define DEBUG_CANVAS_CLIP_REGION}
@@ -4934,7 +4934,11 @@ var
   j, n: Integer;
   x1, y1, x2, y2: Integer;
   pts: TPointsArray;
+  {$IFDEF USE_LCL_CANVAS}
   ACanvas: TCanvas absolute ADest;
+  {$ELSE}
+  ACanvas: TFPCustomCanvas absolute ADest;
+  {$ENDIF}
   coordX, coordY: Integer;
   curSegment: TPathSegment;
   cur2DSegment: T2DSegment absolute curSegment;
@@ -5588,6 +5592,8 @@ var
   lText: String;
   {$ifdef USE_LCL_CANVAS}
   ACanvas: TCanvas absolute ADest;
+  {$ELSE}
+  ACanvas: TFPCustomCanvas absolute ADest;
   {$endif}
 begin
   //lText := Value.Text; // For debugging
@@ -5599,7 +5605,7 @@ begin
   lHeight := 0;
   ARight := ALeft;
   ABottom := ATop;
-  if (ADest = nil) or (not (ADest is TCanvas)) then Exit;
+  if (ADest = nil) or (not (ADest is {$ifdef USE_LCL_CANVAS}TCanvas{$ELSE}TFPCustomCanvas{$ENDIF})) then Exit;
 
   for i := 0 to Value.Count-1 do
   begin
@@ -5632,10 +5638,12 @@ var
   phi: Double;
   {$ifdef USE_LCL_CANVAS}
   ACanvas: TCanvas absolute ADest;
-  lTextSize: TSize;
-  lTextWidth: Integer;
   tm: TLCLTextMetric;
+  {$ELSE}
+  ACanvas: TFPCustomCanvas absolute ADest;
   {$endif}
+  lTextWidth: Integer;
+  lTextSize: TSize;
 begin
   lText := Value.Text + Format(' F=%d', [ADest.Font.Size]); // for debugging
   inherited Render(ADest, ARenderInfo, ADestX, ADestY, AMulX, AMulY, ADoDraw);
@@ -6716,6 +6724,8 @@ var
   lTriangleCenter, lTriangleCorner: T3DPoint;
   {$ifdef USE_LCL_CANVAS}
   ALCLDest: TCanvas absolute ADest;
+  {$ELSE}
+  ALCLDest: TFPCustomCanvas absolute ADest;
   {$endif}
   txt: String;
 begin
@@ -7120,7 +7130,7 @@ var
   lLineHeight: Integer;
 begin
   if ADest <> nil then
-    lLineHeight := TCanvas(ADest).TextHeight(STR_FPVECTORIAL_TEXT_HEIGHT_SAMPLE) + 2
+    lLineHeight := {$ifndef USE_LCL_CANVAS}TFPCustomCanvas{$ELSE}TCanvas{$ENDIF}(ADest).TextHeight(STR_FPVECTORIAL_TEXT_HEIGHT_SAMPLE) + 2
   else
     lLineHeight := 15;
 
@@ -7159,7 +7169,7 @@ begin
   if lText <> '' then
   begin
     if ADest = nil then Result := 10 * UTF8Length(lText)
-    else Result := TCanvas(ADest).TextWidth(lText);
+    else Result := {$ifndef USE_LCL_CANVAS}TFPCustomCanvas{$ELSE}TCanvas{$ENDIF}(ADest).TextWidth(lText);
   end;
 
   case Kind of
@@ -7711,7 +7721,7 @@ var
   lElement: TvFormulaElement;
 begin
   if ADest <> nil then
-    Result := TCanvas(ADest).TextHeight(STR_FPVECTORIAL_TEXT_HEIGHT_SAMPLE) + 2
+    Result := {$ifndef USE_LCL_CANVAS}TFPCustomCanvas{$ELSE}TCanvas{$ENDIF}(ADest).TextHeight(STR_FPVECTORIAL_TEXT_HEIGHT_SAMPLE) + 2
   else
     Result := 15;
 
@@ -7793,7 +7803,7 @@ begin
   ATop := Y;
   ARight := CalculateWidth(ADest);
   if ADest = nil then ABottom := CalculateHeight(ADest) * 15
-  else ABottom := CalculateHeight(ADest) * TCanvas(ADest).TextHeight('Źç');
+  else ABottom := CalculateHeight(ADest) * {$ifndef USE_LCL_CANVAS}TFPCustomCanvas{$ELSE}TCanvas{$ENDIF}(ADest).TextHeight('Źç');
   ARight := X + ARight;
   ABottom := Y + ABottom;
 end;
@@ -8684,7 +8694,9 @@ var
   i: Integer;
   lCurEntity: TvEntity;
   lLeft, lTop, lRight, lBottom: Double;
+  {$ifdef USE_LCL_CANVAS}
   lBmp: TBitmap;
+  {$ENDIF}
 begin
   MinX := 0;
   MinY := 0;
@@ -8692,6 +8704,7 @@ begin
   MaxX := 0;
   MaxY := 0;
   MaxZ := 0;
+  {$ifdef USE_LCL_CANVAS}
   lBmp := TBitmap.Create;
   for i := 0 to GetEntitiesCount() -1 do
   begin
@@ -8705,6 +8718,7 @@ begin
   lBmp.Free;
   Width := MaxX - MinX;
   Height := MaxY - MinY;
+  {$ENDIF}
 end;
 
 procedure TvPage.AutoFit(ADest: TFPCustomCanvas; AWidth, AHeight, ARenderHeight: Integer;
