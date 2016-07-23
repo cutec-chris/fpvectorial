@@ -2,16 +2,12 @@
 <CONFIG>
   <Package Version="4">
     <Name Value="fpvectorialpkg"/>
-    <Type Value="RunAndDesignTime"/>
     <AddToProjectUsesSection Value="True"/>
     <CompilerOptions>
       <Version Value="11"/>
       <SearchPaths>
         <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
-      <Other>
-        <CustomOptions Value="-dUSE_LCL_CANVAS"/>
-      </Other>
     </CompilerOptions>
     <Files Count="22">
       <Item1>
@@ -75,8 +71,8 @@
         <UnitName Value="rawvectorialreadwrite"/>
       </Item15>
       <Item16>
-        <Filename Value="svgvectorialreader.pas"/>
-        <UnitName Value="svgvectorialreader"/>
+        <Filename Value="svgvectorialreader_rsvg.pas"/>
+        <UnitName Value="svgvectorialreader_rsvg"/>
       </Item16>
       <Item17>
         <Filename Value="svgvectorialwriter.pas"/>
@@ -99,8 +95,8 @@
         <UnitName Value="htmlvectorialreader"/>
       </Item21>
       <Item22>
-        <Filename Value="pdfvectorialreader.pas"/>
-        <UnitName Value="pdfvectorialreader"/>
+        <Filename Value="svgvectorialreader.pas"/>
+        <UnitName Value="svgvectorialreader"/>
       </Item22>
     </Files>
     <RequiredPkgs Count="2">

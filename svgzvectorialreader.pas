@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils,
   zstream,
-  svgvectorialreader, fpvectorial, fpvutils;
+  svgvectorialreader, fpvectorial, fpvutils, lazutf8;
 
 type
   { TvSVGZVectorialReader }

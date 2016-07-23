@@ -14,7 +14,7 @@ interface
 
 uses
   Classes, SysUtils,
-  xmlread, dom,
+  laz2_xmlread, laz2_dom,
   fpvectorial;
 
 type

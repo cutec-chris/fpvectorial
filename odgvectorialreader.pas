@@ -52,9 +52,7 @@ uses
   zipper, {NOTE: might require zipper from FPC 2.6.2+ }
   xmlread, DOM, AVL_Tree,
   fpimage, fpcanvas, fgl,
-  fpvectorial, fpvutils
-  //, lazutf8
-  ;
+  fpvectorial, fpvutils, lazutf8;
 
 type
   TDoubleArray = array of Double;
@@ -684,7 +682,7 @@ begin
     begin
       ADest.AssignPen(lCurStyle.Pen);
       if ADest is TvEntityWithPenAndBrush then
-        TvEntityWithPenAndBrush(ADest).AssignBrush(lCurStyle.Brush);
+        TvEntityWithPenAndBrush(ADest).AssignBrush(@lCurStyle.Brush);
 
       Exit;
     end;

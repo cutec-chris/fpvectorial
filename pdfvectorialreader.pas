@@ -35,8 +35,8 @@ type
     { public to allow uncompressing PDFs independently }
     function getFirstPage(AInput: TStream; AOutput: TStream):PageHeader;
     procedure unzipPage(AInput: TStream; AOutput: TStream);
-    procedure translatePage(AInput: TStream; AData: TvVectorialPage;
-      APageHeader: PageHeader);
+    procedure translatePage(AInput: TStream; AData: TvVectorialDocument;
+              APageHeader: PageHeader);
     { General reading methods }
     procedure ReadFromStream(AStream: TStream; AData: TvVectorialDocument); override;
   end;
@@ -174,7 +174,7 @@ begin
 end;
 
 procedure TvPDFVectorialReader.translatePage(AInput: TStream;
- AData: TvVectorialPage; APageHeader: PageHeader);
+ AData: TvVectorialDocument; APageHeader: PageHeader);
 var
   myAnLexico: AnLexico;
   myAnSintaticoCommand: AnSintaticoCommand;
@@ -232,13 +232,13 @@ begin
 
     // translate page to doc data
     AUnzipStream.Seek(0, soFromBeginning);
-    translatePage(AUnzipStream, AData.AddPage, APageHeader);
+    translatePage(AUnzipStream, AData, APageHeader);
   end
   else
   begin
     // translate page to doc data
     APageStream.Seek(0, soFromBeginning);
-    translatePage(APageStream, AData.AddPage, APageHeader);
+    translatePage(APageStream, AData, APageHeader);
   end;
 
   APageStream.Free;

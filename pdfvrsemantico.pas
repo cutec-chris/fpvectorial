@@ -18,7 +18,7 @@ type
     close_path_y: String;
     cm_a, cm_b, cm_c, cm_d, cm_e, cm_f: Real; // coordinate spaces constants
     function StringToFloat(AStr: string): Double;
-    function generate(c: Command; AData: TvVectorialPage): String;
+    function generate(c: Command; AData: TvVectorialDocument): String;
     function convert(x: String; y: String; Axis: Char): String;
     function startMachine(): String;
     function endMachine(): String;
@@ -35,7 +35,7 @@ begin
   else Result := StrToFloat(AStr, FCommaSeparator);
 end;
 
-function AnSemantico.generate(c: Command; AData: TvVectorialPage): String;
+function AnSemantico.generate(c: Command; AData: TvVectorialDocument): String;
 var
   enter_line : String;
 begin
@@ -121,11 +121,9 @@ begin
     {$endif}
     //Result:='G01' + ' ' + 'X' + c.cord_x + ' ' +  'Y' + c.cord_y + enter_line
     //       +'G01 Z0 // Sobe a cabeça de gravação' + enter_line;
-    if (c.cord_x<>'') and (c.cord_y<>'') then
-      begin
-        AData.AddLineToPath(StringToFloat(c.cord_x), StringToFloat(c.cord_y));
-        AData.EndPath();
-      end;
+
+    AData.AddLineToPath(StringToFloat(c.cord_x), StringToFloat(c.cord_y));
+    AData.EndPath();
   end;
   cc_c_BEZIER_TO_X_Y_USING_X2_Y2_AND_X3_Y3: // command c
   begin
